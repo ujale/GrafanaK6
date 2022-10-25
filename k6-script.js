@@ -3,44 +3,28 @@
 import "./libs/shim/core.js";
 import "./libs/shim/expect.js";
 import "./libs/shim/urijs.js";
+import { htmlReport } from "https://raw.githubusercontent.com/benc-uk/k6-reporter/main/dist/bundle.js";
 
-export let options = { maxRedirects: 4 };
+export let options = { maxRedirects: 4,
+  duration: '1m',
+  vus: 250,
+   };
 
 const Request = Symbol.for("request");
 postman[Symbol.for("initial")]({
   options,
   environment: {
     server: "https://qa-api.upkip.live",
-    phone_number: "",
-    transactionurl: "https://qa.upkip.live/kippa-transaction",
-    bizId: "",
-    usertoken: "",
-    userId: "",
-    resettoken: "",
-    txnId: "",
-    phone_numb: "",
-    bizId2: "",
-    vasurl: "https://qa.upkip.live/kippa-vas",
-    kippapayurl: "https://paymentms-qa.upkip.live",
-    walleturl: "https://qa.upkip.live/kippa-wallet",
-    virtualaccno: "",
-    paymentlink: "",
-    walletbalance: "",
-    existinguserbizid: "6664aefc-0c1e-45af-bf6a-42ee901210bf",
-    existingusertoken: "",
-    existinguserId: "",
-    csadmintoken: "",
-    csadminId: "",
-    existingusertoken2: "",
-    existingusertoken3: "",
-    existinguserId3: ""
+    csadmintoken:
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiMjllYWRjM2EtOThmMC00MDhlLWI4ZGQtMjg4NmYzZjQxZmQyIiwiaWF0IjoxNjY2NzEzNTk5LCJleHAiOjE2OTgyNDk1OTl9.SnVjIdY1ikITKCLq8Irk4lz6Tnp1FoPwxiRmDOVI490",
+    csadminId: "29eadc3a-98f0-408e-b8dd-2886f3f41fd2"
   }
 });
 
 export default function() {
   postman[Request]({
     name: "Admin Login Copy",
-    id: "28008f32-cbcf-4ab6-a1bd-3a75b8ecb8f9",
+    id: "641272d2-1073-4064-bff6-e61b10d8945d",
     method: "POST",
     address: "{{server}}/v1/admin/login",
     data: '{\n    "secret":"123456"\n}',
@@ -69,7 +53,7 @@ export default function() {
 
   postman[Request]({
     name: "Get Users Copy",
-    id: "05cf1715-5508-4aec-bd27-d8268cb2e415",
+    id: "77227089-837f-44fb-8438-a9509af57af6",
     method: "GET",
     address: "{{server}}/v1/admin/users",
     post(response) {
@@ -93,7 +77,7 @@ export default function() {
 
   postman[Request]({
     name: "Get Verified Users Copy",
-    id: "3239fb63-0f5a-4d40-83fd-dabd30cc5667",
+    id: "9e232ef0-2702-441e-848d-b5dec5763dff",
     method: "GET",
     address: "{{server}}/v1/admin/users?verified=true&page=0",
     post(response) {
@@ -121,7 +105,7 @@ export default function() {
 
   postman[Request]({
     name: "Get Unverified Users Copy",
-    id: "4810ba30-3659-44a7-8bbe-33a162edc007",
+    id: "e17dcebb-0d0e-43f3-9e62-67797ed9813b",
     method: "GET",
     address: "{{server}}/v1/admin/users?verified=false&page=0",
     post(response) {
@@ -146,4 +130,9 @@ export default function() {
       config.headers.Authorization = `Bearer ${pm[Var]("csadmintoken")}`;
     }
   });
+}
+export function handleSummary(data) {
+  return {
+    "summary.html": htmlReport(data),
+  };
 }
