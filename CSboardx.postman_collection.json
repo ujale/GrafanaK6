@@ -1,0 +1,251 @@
+{
+	"info": {
+		"_postman_id": "62aeed16-6865-43ca-a447-9d9a6e673160",
+		"name": "CS dashboardxxxx",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "7106956"
+	},
+	"item": [
+		{
+			"name": "Admin Login Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"//Set access token as environment variable",
+							" var body = JSON.parse(responseBody);",
+							" pm.environment.set(\"csadmintoken\", body.data.token);",
+							"",
+							"pm.test(\"Login successful\", function () {",
+							"    pm.expect(body.message).to.eql(\"Operation Successful\");",
+							"});",
+							"",
+							"//Set person id as environment variable",
+							" var body = JSON.parse(responseBody);",
+							" pm.environment.set(\"csadminId\", body.data.id);",
+							"",
+							" pm.test(\"Response time is less than 1500ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(1500);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"secret\":\"123456\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server}}/v1/admin/login",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"v1",
+						"admin",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Users Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"var body = JSON.parse(responseBody);",
+							"pm.test(\"Login successful\", function () {",
+							"    pm.expect(body.message).to.eql(\"Operation Successful\");",
+							"});",
+							"",
+							"",
+							" pm.test(\"Response time is less than 1500ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(1500);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{csadmintoken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{server}}/v1/admin/users",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"v1",
+						"admin",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Verified Users Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"var body = JSON.parse(responseBody);",
+							"pm.test(\"Login successful\", function () {",
+							"    pm.expect(body.message).to.eql(\"Operation Successful\");",
+							"});",
+							"",
+							"",
+							" pm.test(\"Response time is less than 1500ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(1500);",
+							"});",
+							"",
+							"//pm.test(\"verifiedusercount\", function () {",
+							"//    pm.expect(body.data.total).to.eql(159);",
+							"//});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{csadmintoken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{server}}/v1/admin/users?verified=true&page=0",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"v1",
+						"admin",
+						"users"
+					],
+					"query": [
+						{
+							"key": "verified",
+							"value": "true"
+						},
+						{
+							"key": "page",
+							"value": "0"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Unverified Users Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"var body = JSON.parse(responseBody);",
+							"pm.test(\"Login successful\", function () {",
+							"    pm.expect(body.message).to.eql(\"Operation Successful\");",
+							"});",
+							"",
+							"",
+							" pm.test(\"Response time is less than 1500ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(1500);",
+							"});",
+							"",
+							"pm.test(\"unverifiedusercount\", function () {",
+							"    pm.expect(body.data.total).to.eql(5);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{csadmintoken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{server}}/v1/admin/users?verified=false&page=0",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"v1",
+						"admin",
+						"users"
+					],
+					"query": [
+						{
+							"key": "verified",
+							"value": "false"
+						},
+						{
+							"key": "page",
+							"value": "0"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
